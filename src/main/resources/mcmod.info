@@ -1,0 +1,16 @@
+[
+{
+  "modid": "wfcgdmc",
+  "name": "WFC GDMC Entry",
+  "description": "Entry for a GDMC competition that uses WFC PCG method.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Jakub Mifek"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
