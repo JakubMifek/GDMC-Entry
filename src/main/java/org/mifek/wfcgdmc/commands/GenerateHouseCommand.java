@@ -1,10 +1,8 @@
 package org.mifek.wfcgdmc.commands;
 
 import com.google.common.collect.Lists;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.server.MinecraftServer;
@@ -12,38 +10,45 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.World;
-import org.mifek.vgl.commands.SpawnDirtBlock;
+import org.jetbrains.annotations.NotNull;
+import org.mifek.vgl.commands.GenerateHouse;
 import org.mifek.vgl.implementations.Area;
 import org.mifek.vgl.implementations.Blocks;
+import org.mifek.vgl.wfc.DebugOptions;
+import org.mifek.wfcgdmc.WfcGdmc;
+import org.mifek.wfcgdmc.config.WfcGdmcConfig;
 
 import java.util.List;
 
-public class SpawnBlockCommand extends CommandBase {
-    private final List<String> aliases = Lists.newArrayList("spawn_block", "sb");
+public class GenerateHouseCommand extends CommandBase {
+    private static final GenerateHouse GH = new GenerateHouse();
+    private final List<String> aliases = Lists.newArrayList("generate_house", "gh");
 
+    @NotNull
     @Override
     public String getName() {
         return aliases.get(0);
     }
 
+    @NotNull
     @Override
-    public String getUsage(ICommandSender sender) {
+    public String getUsage(@NotNull ICommandSender sender) {
         return aliases.get(0) + " <x> <y> <z>";
     }
 
+    @NotNull
     @Override
     public List<String> getAliases() {
         return aliases;
     }
 
     @Override
-    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+    public boolean checkPermission(@NotNull MinecraftServer server, @NotNull ICommandSender sender) {
         return true;
     }
 
     @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+    public void execute(@NotNull MinecraftServer server, @NotNull ICommandSender sender, String[] args) {
         if (args.length == 0) {
             Minecraft instance = Minecraft.getMinecraft();
             if (instance.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
@@ -61,9 +66,7 @@ public class SpawnBlockCommand extends CommandBase {
             return;
         }
 
-        int x;
-        int y;
-        int z;
+        int x, y, z;
         try {
             x = (int) CommandBase.parseDouble(args[0]);
             y = (int) CommandBase.parseDouble(args[1]);
@@ -73,19 +76,10 @@ public class SpawnBlockCommand extends CommandBase {
             return;
         }
 
-        sender.sendMessage(new TextComponentString("Spawning block at " + x + " " + y + " " + z));
+        sender.sendMessage(new TextComponentString("Generating house at " + x + " " + y + " " + z));
 
-        Area area = new Area(x, y, z, 100, 100, 100);
-        World world = sender.getEntityWorld();
-        SpawnDirtBlock SB = new SpawnDirtBlock();
-        Integer[][][] result = SB.execute(area);
-        for (int X = 0; X < area.getWidth(); X++)
-            for (int Y = 0; Y < area.getHeight(); Y++)
-                for (int Z = 0; Z < area.getDepth(); Z++) {
-                    if (result[X][Y][Z].equals(Blocks.NONE.getId())) continue;
+        Area area = new Area(x, y, z, WfcGdmcConfig.client.HOUSE_WIDTH, WfcGdmcConfig.client.HOUSE_HEIGHT, WfcGdmcConfig.client.HOUSE_DEPTH);
 
-                    world.setBlockState(new BlockPos(x + X, y + Y, z + Z), Block.getBlockById(result[X][Y][Z]).getDefaultState());
-                }
+        new Thread(() -> GH.execute(area, WfcGdmc.overWorldBlockStream, new DebugOptions(Blocks.BEACON, false, null))).start();
     }
-
 }

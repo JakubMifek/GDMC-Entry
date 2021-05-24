@@ -11,7 +11,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import org.jetbrains.annotations.NotNull;
-import org.mifek.vgl.SpawnHouse;
+import org.mifek.vgl.commands.SpawnHouse;
 import org.mifek.vgl.implementations.Area;
 import org.mifek.wfcgdmc.WfcGdmc;
 

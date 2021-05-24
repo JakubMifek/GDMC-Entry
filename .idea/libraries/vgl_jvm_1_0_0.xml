@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="vgl-jvm-1.0.0">
+  <library name="VGL-jvm-1.0.0">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/libs/vgl-jvm-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/VGL-jvm-1.0.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
