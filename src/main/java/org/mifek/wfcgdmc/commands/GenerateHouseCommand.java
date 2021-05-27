@@ -1,6 +1,6 @@
+/*
 package org.mifek.wfcgdmc.commands;
 
-import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -16,13 +16,13 @@ import org.mifek.vgl.implementations.Area;
 import org.mifek.vgl.implementations.Blocks;
 import org.mifek.vgl.wfc.DebugOptions;
 import org.mifek.wfcgdmc.WfcGdmc;
-import org.mifek.wfcgdmc.config.WfcGdmcConfig;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class GenerateHouseCommand extends CommandBase {
+public class GenerateHouseCommand extends CommandBase implements ICommand {
     private static final GenerateHouse GH = new GenerateHouse();
-    private final List<String> aliases = Lists.newArrayList("generate_house", "gh");
+    private final List<String> aliases = Arrays.asList("generate_house", "gh");
 
     @NotNull
     @Override
@@ -78,8 +78,14 @@ public class GenerateHouseCommand extends CommandBase {
 
         sender.sendMessage(new TextComponentString("Generating house at " + x + " " + y + " " + z));
 
-        Area area = new Area(x, y, z, WfcGdmcConfig.client.HOUSE_WIDTH, WfcGdmcConfig.client.HOUSE_HEIGHT, WfcGdmcConfig.client.HOUSE_DEPTH);
+        Area area = new Area(x, y, z, 16, 12, 16);
 
         new Thread(() -> GH.execute(area, WfcGdmc.overWorldBlockStream, new DebugOptions(Blocks.BEACON, false, null))).start();
     }
+
+    @Override
+    public void init() {
+
+    }
 }
+*/

@@ -1,6 +1,5 @@
 package org.mifek.wfcgdmc.commands;
 
-import com.google.common.collect.Lists;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -14,13 +13,14 @@ import org.mifek.vgl.commands.SaveTemplate;
 import org.mifek.vgl.implementations.Block;
 import org.mifek.wfcgdmc.utils.BlockState;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class SaveTemplateCommand extends CommandBase {
+public class SaveTemplateCommand extends CommandBase implements ICommand {
     private static final SaveTemplate command = new SaveTemplate();
 
-    private final List<String> aliases = Lists.newArrayList("save_template", "st");
+    private final List<String> aliases = Arrays.asList("save_template", "st");
 
     @Override
     public String getName() {
@@ -93,5 +93,10 @@ public class SaveTemplateCommand extends CommandBase {
                     blocks[x][y][z] = BlockState.serialize(world.getBlockState(new BlockPos(x1 + x, y1 + y, z1 + z)));
 
         command.execute(blocks, name);
+    }
+
+    @Override
+    public void init() {
+
     }
 }

@@ -35,17 +35,16 @@ public class BlockStream implements IBlockStream {
     }
 
     public void tick() {
-        if (!isEmpty()) {
-            for (int i = 0; i < Math.min(linkedList.size(), config.NUMBER_OF_PLACED_BLOCKS); i++) {
-                PlacedBlock block = removeFirst();
-                if (block == null || block.getBlock() == Blocks.NONE) continue;
+        int M = Math.min(linkedList.size(), config.NUMBER_OF_PLACED_BLOCKS);
+        for (int i = 0; i < M; i++) {
+            PlacedBlock block = removeFirst();
+            if (block == null || block.getBlock() == Blocks.NONE) return;
 
 //                System.out.println("Placing block " + block.getBlock().getId());
 
-                BlockPos bp = new BlockPos(block.getX(), block.getY(), block.getZ());
+            BlockPos bp = new BlockPos(block.getX(), block.getY(), block.getZ());
 
-                world.setBlockState(bp, BlockState.deserialize(block));
-            }
+            world.setBlockState(bp, BlockState.deserialize(block));
         }
     }
 }

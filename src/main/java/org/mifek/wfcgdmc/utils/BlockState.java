@@ -43,6 +43,6 @@ public class BlockState {
             if (value.getName().equalsIgnoreCase(block.getProps().get(property.getName()).toString()))
                 return state.withProperty(property, value);
 
-        throw new Error("Given property was not an EnumProperty. " + prop.getName() + " " + prop.getValueClass().getName() + " " + prop.getClass().getName());
+        throw new Error("Given property was not an EnumProperty. " + prop.getName() + " " + prop.getValueClass().getName() + " " + prop.getClass().getName() + " \t" + block.getProps().get(property.getName()).toString());
     }
 }

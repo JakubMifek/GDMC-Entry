@@ -1,19 +1,17 @@
 package org.mifek.wfcgdmc.commands;
 
-import com.google.common.collect.Lists;
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.NumberInvalidException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import org.mifek.vgl.commands.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class HelloWorldCommand extends CommandBase {
-    private final List<String> aliases = Lists.newArrayList("hello_world", "hw");
+public class HelloWorldCommand extends CommandBase implements ICommand {
+    private final List<String> aliases = Arrays.asList("hello_world", "hw");
 
     @Override
     public String getName() {
@@ -36,12 +34,17 @@ public class HelloWorldCommand extends CommandBase {
     }
 
     @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) {
         if (args.length > 0) {
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "No arguments expected."));
             return;
         }
 
         sender.sendMessage(new TextComponentString(new Test().test()));
+    }
+
+    @Override
+    public void init() {
+
     }
 }

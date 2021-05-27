@@ -1,6 +1,5 @@
 package org.mifek.wfcgdmc.commands;
 
-import com.google.common.collect.Lists;
 import kotlin.Pair;
 import kotlin.Triple;
 import net.minecraft.command.CommandBase;
@@ -22,12 +21,13 @@ import org.mifek.wfc.models.options.Cartesian3DModelOptions;
 import org.mifek.wfcgdmc.WfcGdmc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class ReplicateManyCommand extends CommandBase {
+public class ReplicateManyCommand extends CommandBase implements ICommand {
     private static final Generate generate = new Generate();
-    private final List<String> aliases = Lists.newArrayList("replicate_many", "rm");
+    private final List<String> aliases = Arrays.asList("replicate_many", "rm");
 
     @NotNull
     @Override
@@ -59,7 +59,7 @@ public class ReplicateManyCommand extends CommandBase {
             return;
         }
 
-        int x1, y1, z1, w, h, d, amount, tmp;
+        int x1, y1, z1, w, h, d, amount;
         try {
             x1 = (int) CommandBase.parseDouble(args[1]);
             y1 = (int) CommandBase.parseDouble(args[2]);
@@ -100,83 +100,64 @@ public class ReplicateManyCommand extends CommandBase {
         final int doorsX = dX, doorsY = dY, doorsZ = dZ;
         final Block doors = drs;
 
-        new Thread(() -> {
-            for (int a = 0; a < amount; a++)
-                for (int b = 0; b < amount; b++) {
-                    int id = a * amount + b;
-                    if (id % 2 == 0) continue;
+        for (int a = 0; a < amount; a++)
+            for (int b = 0; b < amount; b++) {
+                int id = a * amount + b;
+                Area area = new Area(x1 + b * w, y1, z1 + a * d, w, h, d);
 
-                    Area area = new Area(x1 + b * w, y1, z1 + a * d, w, h, d);
+                MinecraftWfcAdapterOptions options = new MinecraftWfcAdapterOptions(
+                        2,
+                        () -> {
+                            ArrayList<Pair<Triple<Integer, Integer, Integer>, ? extends Block>> holder = new ArrayList<>();
+                            HashMap<String, Object> emptyParams = new HashMap<>();
 
-                    MinecraftWfcAdapterOptions options = new MinecraftWfcAdapterOptions(
-                            2,
-                            () -> {
-                                ArrayList<Pair<Triple<Integer, Integer, Integer>, ? extends Block>> holder = new ArrayList<>();
-                                HashMap<String, Object> emptyParams = new HashMap<>();
-
-                                for (int x = 0; x < w; x++) {
-                                    for (int y = 1; y < h; y++) {
-                                        holder.add(new Pair<>(new Triple<>(x, y, 0), new Block(Blocks.AIR, emptyParams)));
-                                        holder.add(new Pair<>(new Triple<>(x, y, d - 1), new Block(Blocks.AIR, emptyParams)));
-                                        if (y == h - 1 || x == 0 || x == w - 1) {
-                                            for (int z = 0; z < d; z++) {
-                                                holder.add(new Pair<>(new Triple<>(x, y, z), new Block(Blocks.AIR, emptyParams)));
-                                            }
+                            for (int x = 0; x < w; x++) {
+                                for (int y = 1; y < h; y++) {
+                                    holder.add(new Pair<>(new Triple<>(x, y, 0), new Block(Blocks.AIR, emptyParams)));
+                                    holder.add(new Pair<>(new Triple<>(x, y, d - 1), new Block(Blocks.AIR, emptyParams)));
+                                    if (y == h - 1 || x == 0 || x == w - 1) {
+                                        for (int z = 0; z < d; z++) {
+                                            holder.add(new Pair<>(new Triple<>(x, y, z), new Block(Blocks.AIR, emptyParams)));
                                         }
                                     }
                                 }
+                            }
 
-                                holder.add(new Pair<>(new Triple<>(doorsX, doorsY, doorsZ), doors));
+                            holder.add(new Pair<>(new Triple<>(doorsX, doorsY, doorsZ), doors));
 
-                                return holder.iterator();
-                            },
-                            new Cartesian3DModelOptions(false, true, false, false, false, false, false, false),
-                            null,
-                            1,
-                            new StreamOptions(WfcGdmc.overWorldBlockStream, area, PlacementStyle.ON_COLLAPSE)
-                    );
+                            return holder.iterator();
+                        },
+                        new Cartesian3DModelOptions(false, true, false, false, false, false, false, false, 1.0),
+                        null,
+                        1,
+                        new StreamOptions(WfcGdmc.overWorldBlockStream, area, PlacementStyle.ON_COLLAPSE),
+                        name
+                );
+
+                WfcGdmc.executors.submit(() -> {
                     System.out.println("Executing order " + id);
                     generate.execute(name, area, options);
-                }
-        }).start();
-        new Thread(() -> {
-            for (int a = 0; a < amount; a++)
-                for (int b = 0; b < amount; b++) {
-                    int id = a * amount + b;
-                    if (id % 2 == 1) continue;
+                });
+            }
+    }
 
-                    Area area = new Area(x1 + b * w, y1, z1 + a * d, w, h, d);
-
-                    MinecraftWfcAdapterOptions options = new MinecraftWfcAdapterOptions(
-                            2,
-                            () -> {
-                                ArrayList<Pair<Triple<Integer, Integer, Integer>, ? extends Block>> holder = new ArrayList<>();
-                                HashMap<String, Object> emptyParams = new HashMap<>();
-
-                                for (int x = 0; x < w; x++) {
-                                    for (int y = 1; y < h; y++) {
-                                        holder.add(new Pair<>(new Triple<>(x, y, 0), new Block(Blocks.AIR, emptyParams)));
-                                        holder.add(new Pair<>(new Triple<>(x, y, d - 1), new Block(Blocks.AIR, emptyParams)));
-                                        if (y == h - 1 || x == 0 || x == w - 1) {
-                                            for (int z = 0; z < d; z++) {
-                                                holder.add(new Pair<>(new Triple<>(x, y, z), new Block(Blocks.AIR, emptyParams)));
-                                            }
-                                        }
-                                    }
-                                }
-
-                                holder.add(new Pair<>(new Triple<>(doorsX, doorsY, doorsZ), doors));
-
-                                return holder.iterator();
-                            },
-                            new Cartesian3DModelOptions(false, true, false, false, false, false, false, false),
-                            null,
-                            1,
-                            new StreamOptions(WfcGdmc.overWorldBlockStream, area, PlacementStyle.ON_COLLAPSE)
-                    );
-                    System.out.println("Executing order " + id);
-                    generate.execute(name, area, options);
-                }
-        }).start();
+    @Override
+    public void init() {
+        System.out.println("Replicate Many Command is initializing the templates.");
+        for (String key : TemplateHolder.INSTANCE.getTemplates().keySet()) {
+            Area area = new Area(0, 0, 0, 3, 3, 3);
+            try {
+                generate.execute(key, area, new MinecraftWfcAdapterOptions(
+                        2,
+                        null,
+                        new Cartesian3DModelOptions(false, true, false, false, false, false, false, false, 1.0),
+                        null,
+                        0,
+                        null,
+                        key
+                ));
+            } catch (Error ignored) {
+            }
+        }
     }
 }

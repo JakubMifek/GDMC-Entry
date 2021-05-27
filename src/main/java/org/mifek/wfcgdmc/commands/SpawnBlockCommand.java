@@ -1,6 +1,5 @@
 package org.mifek.wfcgdmc.commands;
 
-import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
@@ -17,10 +16,11 @@ import org.mifek.vgl.commands.SpawnDirtBlock;
 import org.mifek.vgl.implementations.Area;
 import org.mifek.vgl.implementations.Blocks;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class SpawnBlockCommand extends CommandBase {
-    private final List<String> aliases = Lists.newArrayList("spawn_block", "sb");
+public class SpawnBlockCommand extends CommandBase implements ICommand {
+    private final List<String> aliases = Arrays.asList("spawn_block", "sb");
 
     @Override
     public String getName() {
@@ -88,4 +88,8 @@ public class SpawnBlockCommand extends CommandBase {
                 }
     }
 
+    @Override
+    public void init() {
+
+    }
 }

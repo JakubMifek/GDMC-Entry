@@ -1,6 +1,5 @@
 package org.mifek.wfcgdmc.commands;
 
-import com.google.common.collect.Lists;
 import kotlin.Pair;
 import kotlin.Triple;
 import net.minecraft.command.CommandBase;
@@ -22,12 +21,13 @@ import org.mifek.wfc.models.options.Cartesian3DModelOptions;
 import org.mifek.wfcgdmc.WfcGdmc;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class ReplicateCommand extends CommandBase {
+public class ReplicateCommand extends CommandBase implements ICommand {
     private static final Generate generate = new Generate();
-    private final List<String> aliases = Lists.newArrayList("replicate", "r");
+    private final List<String> aliases = Arrays.asList("replicate", "r");
 
     @NotNull
     @Override
@@ -140,12 +140,18 @@ public class ReplicateCommand extends CommandBase {
 
                     return holder.iterator();
                 },
-                new Cartesian3DModelOptions(false, true, false, false, true, false, false, false),
+                new Cartesian3DModelOptions(false, true, false, false, false, false, false, false, 1.0),
                 null,
-                5,
-                new StreamOptions(WfcGdmc.overWorldBlockStream, area, PlacementStyle.ON_COLLAPSE)
+                1,
+                new StreamOptions(WfcGdmc.overWorldBlockStream, area, PlacementStyle.ON_COLLAPSE),
+                name
         );
 
-        new Thread(() -> generate.execute(name, area, options)).start();
+        WfcGdmc.executors.submit(() -> generate.execute(name, area, options));
+    }
+
+    @Override
+    public void init() {
+
     }
 }

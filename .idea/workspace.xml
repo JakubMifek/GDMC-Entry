@@ -5,26 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f9b95eef-3765-4055-9e68-3fb3727c6673" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateHouseCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateManyCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/SaveTemplateCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/utils/BlockState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/vgl_jvm_1_0_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/vgl_jvm_1_0_0.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/runClient.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/runData.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/runServer.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/saveactions_settings.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateFloorPlanCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ICommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/BlockStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/BlockStream.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/WfcGdmc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/WfcGdmc.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateHouseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateHouseCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/HelloWorldCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/HelloWorldCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateManyCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateManyCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/SaveTemplateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/SaveTemplateCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/SpawnBlockCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/SpawnBlockCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/SpawnHouseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/SpawnHouseCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/config/WfcGdmcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/config/WfcGdmcConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/utils/BlockState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/utils/BlockState.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,34 +38,7 @@
         </task>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="GDMC-Entry" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="GDMC-Entry" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="GDMC-Entry" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="GDMC-Entry" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="fg_runs" type="c8890929:TasksNode$1" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="GDMC-Entry" type="f1a62948:ProjectNode" />
-                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -83,6 +50,7 @@
       <list>
         <option value="Kotlin Class" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>

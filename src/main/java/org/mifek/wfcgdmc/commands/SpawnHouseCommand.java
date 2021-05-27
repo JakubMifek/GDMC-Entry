@@ -1,6 +1,5 @@
 package org.mifek.wfcgdmc.commands;
 
-import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -15,10 +14,11 @@ import org.mifek.vgl.commands.SpawnHouse;
 import org.mifek.vgl.implementations.Area;
 import org.mifek.wfcgdmc.WfcGdmc;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class SpawnHouseCommand extends CommandBase {
-    private final List<String> aliases = Lists.newArrayList("spawn_house", "sh");
+public class SpawnHouseCommand extends CommandBase implements ICommand {
+    private final List<String> aliases = Arrays.asList("spawn_house", "sh");
 
     @NotNull
     @Override
@@ -79,5 +79,10 @@ public class SpawnHouseCommand extends CommandBase {
         Area area = new Area(x, y, z, 100, 100, 100);
         SpawnHouse SH = new SpawnHouse();
         SH.execute(area, WfcGdmc.overWorldBlockStream);
+    }
+
+    @Override
+    public void init() {
+
     }
 }
