@@ -21,15 +21,16 @@ public class WfcGdmc {
     public static BlockStream overWorldBlockStream;
     public static final ExecutorService executors = Executors.newFixedThreadPool(Math.max(2, Runtime.getRuntime().availableProcessors() - 4));
 
-    static final ICommand[] commands = new ICommand[]{
+    public static final ICommand[] commands = new ICommand[]{
             new HelloWorldCommand(),
             new SpawnHouseCommand(),
-//            new GenerateHouseCommand(),
+            new GenerateHouseCommand(),
             new SpawnBlockCommand(),
             new SaveTemplateCommand(),
             new ReplicateCommand(),
             new ReplicateManyCommand(),
-            new GenerateFloorPlanCommand()
+            new GenerateFloorPlanCommand(),
+            new GenerateVillageCommand()
     };
 
     @EventHandler

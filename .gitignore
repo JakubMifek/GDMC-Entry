@@ -27,4 +27,5 @@ hs_err_pid*
 build
 libs/*
 !libs/README.md
-run
+run/*
+!run/templates

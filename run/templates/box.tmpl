@@ -1,0 +1,117 @@
+# Building blocks
+A,2                                              # GRASS
+B,0                                              # AIR
+C,3,variant:DIRT                                 # DIRT
+D,5,variant:DARK_OAK                             # OAK_WOOD_PLANK
+E,1,variant:STONE                                # STONE
+F,64,hinge:RIGHT,half:LOWER,facing:EAST          # OAK_DOOR
+G,102                                            # GLASS_PANE
+H,64,hinge:RIGHT,half:UPPER,facing:EAST          # OAK_DOOR
+
+11x7x13 # Template dimensions
+
+# Template data
+# 0. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B B B B B B
+A A A A A A A A A A A
+# 1. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B E E E E E B
+B B B B B E G G G E B
+B B B B B E E E E E B
+A A A A A C C C C A A
+# 2. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B E E E B B
+B B B B B E B B B E B
+B B B B B G B B B G B
+B B B B B E B B B E B
+A A A A A C D D D C A
+# 3. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B E E E B B
+B B B B B E B B B E B
+B B B B B G B B B G B
+B B B B B E B B B E B
+A A A A A C D D D C A
+# 4. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B E E E B B
+B E E E E E B B B E B
+B E G G G E B B B G B
+B E E E E E B B B E B
+A C A C C C D D D C A
+# 5. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B E E E E E E E B B
+B E B B B B B B B E B
+B G B B B B B B B E B
+B E B B B B B B B E B
+A C D D D D D D D C A
+# 6. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B E E E E E E E B B
+B E B B B B B B B E B
+B G B B B B B B B H B
+B E B B B B B B B F B
+A A D D D D D D D D A
+# 7. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B E E E E E E E B B
+B E B B B B B B B E B
+B G B B B B B B B E B
+B E B B B B B B B E B
+A C D D D D D D D C A
+# 8. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B E E E B B
+B E E E E E B B B E B
+B E G G G E B B B G B
+B E E E E E B B B E B
+A A C C C C D D D C A
+# 9. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B E E E B B
+B B B B B E B B B E B
+B B B B B G B B B G B
+B B B B B E B B B E B
+A A A A A C D D D C A
+# 10. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B E E E B B
+B B B B B E B B B E B
+B B B B B G B B B G B
+B B B B B E B B B E B
+A A A A A C D D D C A
+# 11. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B E E E E E B
+B B B B B E G G G E B
+B B B B B E E E E E B
+A A A A A C C C C C A
+# 12. slice
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B B B B B B
+B B B B B B B B B B B
+A A A A A A A A A A A

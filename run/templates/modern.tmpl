@@ -1,0 +1,245 @@
+# Building blocks
+A,3,variant:DIRT                                 # DIRT
+B,2                                              # GRASS
+C,0                                              # AIR
+D,1,variant:STONE                                # STONE
+E,102                                            # GLASS_PANE
+F,5,variant:DARK_OAK                             # OAK_WOOD_PLANK
+G,169                                            # SEA_LANTERN
+H,64,hinge:LEFT,half:LOWER,facing:EAST           # OAK_DOOR
+I,64,hinge:LEFT,half:UPPER,facing:EAST           # OAK_DOOR
+
+20x10x21 # Template dimensions
+
+# Template data
+# 0. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+B B B B B B B B B B B B B B B B B B B B
+A A A A A A A A A A A A A A A A A A A A
+# 1. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+B B B B B B B B B B B B B B B B B B B B
+A A A A A A A A A A A A A A A A A A A A
+# 2. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C D D D D D D D C
+C C C C C C C C C C C C D E E E E E D C
+C C C C C C C C C C C C D D D D D D D C
+B B B B B B B B B B B B A A A A A A A B
+A A A A A A A A A A A A A A A A A A A A
+# 3. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C D D D D D C C
+C C C C C C C C C C C C D C C C C C D C
+C C C C C C C C C C C C E C C C C C E C
+C C C C C C C C C C C C D C C C C C D C
+B B B B B B B B B B B B A F F F F F A B
+A A A A A A A A A A A A A A A A A A A A
+# 4. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C D D D D D D D G D D C C
+C C C C C C C C E E E E D C C C C C D C
+C C C C C C C C E E E E D C C C C C E C
+C C C C C C C C D D D D D C C C C C D C
+B B B B B B B B A A A A A F F F F F A B
+A A A A A A A A A A A A A A A A A A A A
+# 5. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C D D D C C C C C C C C
+C C C C C C C C D C C C D D D D D D C C
+C C C C C C C C E C C C D C C C C C D C
+C C C C C C C C E C C C D C C C C C E C
+C C C C C C C C D C C C D C C C C C D C
+B B B B B B B B A F F F A F F F F F A B
+A A A A A A A A A A A A A A A A A A A A
+# 6. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C D G D C C C C C C C C
+C C C C C C C C D C C C D D D D C C C C
+C C C C C C C C E C C C D D D D D D D C
+C C C C C C C C E C C C D D C D D E D C
+C C C C C C C C D C C C D D C D D D D C
+B B B B B B B B A F F F A A F A A A A B
+A A A A A A A A A A A A A A A A A A A A
+# 7. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C D D D C C C C C C C C
+C C C C C C C C D C C C D D D D C C C C
+C C C C C C C C E C C C C C C C D C C C
+C C C C C C C C E C C C C C C C E C C C
+C C C C C C C C D C C C C C C C D C C C
+B B B B B B B B A F F F F F F F A B B B
+A A A A A A A A A A A A A A A A A A A A
+# 8. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C D D D D D D D D C C C C
+C C D D D D D D D D D C C C C C D C C C
+C C D E E E E E D D D C C C C C E C C C
+C C D D D D D D D D D C C C C C D C C C
+B B A A A A A A A A A F F F F F A B B B
+A A A A A A A A A A A A A A A A A A A A
+# 9. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C D D D D D D D D D D G D D C C C C
+C C D C C C C C C C D C C C C C D C C C
+C C E C C C C C C C D C C C C C E C C C
+C C D C C C C C C C D C C C C C D C C C
+B B A F F F F F F F A F F F F F A B B B
+A A A A A A A A A A A A A A A A A A A A
+# 10. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C D G D D D G D D D D D D D C C C C
+C C D C C C C C C C D C C C C C D C C C
+C C E C C C C C C C C C C C C C E C C C
+C C D C C C C C C C C C C C C C D C C C
+B B A F F F F F F F F F F F F F A B B B
+A A A A A A A A A A A A A A A A A A A A
+# 11. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C D D D D D D D D D D D C C C C C C
+C C D C C C C C C C D D D D D D D C C C
+C C E C C C C C C C D D C D D E D C C C
+C C D C C C C C C C D D C D D D D C C C
+B B A F F F F F F F A A F A A A A B B B
+A A A A A A A A A A A A A A A A A A A A
+# 12. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C D D D D D D D C C C C C C
+C C D D D D D D D D D C C C D C C C C C
+C C D E E E D D C D D C C C D C C C C C
+C C D D D D D D C D D C C C D C C C C C
+B B A A A A A A F A A F F F A B B B B B
+A A A A A A A A A A A A A A A A A A A A
+# 13. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C D D D D D D D C C C C C C
+C C C C C C D C C C D C C C D C C C C C
+C C C C C C E C C C D C C C D C C C C C
+C C C C C C D C C C D C C C D C C C C C
+B B B B B B A F F F A F F F A B B B B B
+A A A A A A A A A A A A A A A A A A A A
+# 14. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C D G D D D G D C C C C C C
+C C C C C C D C C C D C C C D C C C C C
+C C C C C C E C C C C C C C I C C C C C
+C C C C C C D C C C C C C C H C C C C C
+B B B B B B A F F F F F F F F B B B B B
+A A A A A A A A A A A A A A A A A A A A
+# 15. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C D D D D D D D C C C C C C
+C C C C C C D C C C D C C C D C C C C C
+C C C C C C D C C C D C C C D C C C C C
+C C C C C C D C C C D C C C D C C C C C
+B B B B B B A F F F A F F F A B B B B B
+A A A A A A A A A A A A A A A A A A A A
+# 16. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C D D D C C C C C C C C C C
+C C C C C C D C C C D D D D D C C C C C
+C C C C C C D C C C D E E E D C C C C C
+C C C C C C D C C C D D D D D C C C C C
+B B B B B B A F F F A A A A A B B B B B
+A A A A A A A A A A A A A A A A A A A A
+# 17. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C D G D C C C C C C C C C C
+C C C C C C D C C C D C C C C C C C C C
+C C C C C C E C C C E C C C C C C C C C
+C C C C C C D C C C D C C C C C C C C C
+B B B B B B A F F F A B B B B B B B B B
+A A A A A A A A A A A A A A A A A A A A
+# 18. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C D D D C C C C C C C C C C
+C C C C C C D C C C D C C C C C C C C C
+C C C C C C E C C C E C C C C C C C C C
+C C C C C C D C C C D C C C C C C C C C
+B B B B B B A F F F A B B B B B B B B B
+A A A A A A A A A A A A A A A A A A A A
+# 19. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C D D D D D C C C C C C C C C
+C C C C C C D E E E D C C C C C C C C C
+C C C C C C D D D D D C C C C C C C C C
+B B B B B B A A A A A B B B B B B B B B
+A A A A A A A A A A A A A A A A A A A A
+# 20. slice
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+C C C C C C C C C C C C C C C C C C C C
+B B B B B B B B B B B B B B B B B B B C
+A A A A A A A A A A A A A A A A A A A A

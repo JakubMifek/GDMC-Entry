@@ -1,5 +1,6 @@
 package org.mifek.wfcgdmc.utils;
 
+import com.google.common.base.Optional;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
@@ -9,6 +10,7 @@ import org.mifek.vgl.implementations.Block;
 import org.mifek.vgl.implementations.Blocks;
 
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 public class BlockState {
     public static Block serialize(IBlockState blockState) {
@@ -37,12 +39,13 @@ public class BlockState {
 
 
     @NotNull
-    private static <T extends Enum<T> & IStringSerializable> IBlockState setEnumProperty(IBlockState state, IProperty<T> prop, Block block) throws Error {
-        PropertyEnum<T> property = (PropertyEnum<T>) prop;
-        for (T value : property.getAllowedValues())
-            if (value.getName().equalsIgnoreCase(block.getProps().get(property.getName()).toString()))
-                return state.withProperty(property, value);
+    private static <T extends Enum<T> & IStringSerializable> IBlockState setEnumProperty(IBlockState state, PropertyEnum<T> prop, Block block) throws Error {
+        System.out.println("Converting " + prop.getName() + " value " + block.getProps().get(prop.getName()).toString().toLowerCase());
+        System.out.println("Allowed values: " + prop.getAllowedValues().stream().map(item -> item.toString() + " ").collect(Collectors.joining()));
+        Optional<T> value = prop.parseValue(block.getProps().get(prop.getName()).toString().toLowerCase());
+        if (value.isPresent())
+            return state.withProperty(prop, value.get());
 
-        throw new Error("Given property was not an EnumProperty. " + prop.getName() + " " + prop.getValueClass().getName() + " " + prop.getClass().getName() + " \t" + block.getProps().get(property.getName()).toString());
+        throw new Error("Given property was not an EnumProperty. " + prop.getName() + " " + prop.getValueClass().getName() + " " + prop.getClass().getName() + " \t" + block.getProps().get(prop.getName()).toString());
     }
 }

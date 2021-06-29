@@ -1,0 +1,183 @@
+# Building blocks
+X,-1 # Leave be
+A,0  # Air
+H,17 # Oak wood
+=,17,axis:x
+",17,axis:z
+P,5  # oak wood plank
+G,102 # glass pane
+I,64,half:upper,hinge:left,facing:south # Oak doors
+J,64,half:lower,hinge:left,facing:south
+W,53,half:bottom,facing:west # Oak wood stairs
+V,53,half:top,facing:west
+E,53,half:bottom,facing:east
+F,53,half:top,facing:east
+N,53,half:bottom,facing:north
+M,53,half:top,facing:north
+S,53,half:bottom,facing:south
+Z,53,half:top,facing:south
+*,126,half:top # wooden_slab
+4,50,facing:east # torch
+6,50,facing:west
+8,50,facing:south
+2,50,facing:north
+
+12x12x12
+
+# Template
+# 0th slice
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+# 1st slice
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X N N N N N N N N N N X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+# 2nd slice
+X X X X X X X X X X X X
+X A A A A A A A A A A X
+X A A A A E W A A A A X
+X A A A E V F W A A A X
+X A A E V A A F W A A X
+X A E V A A A A F W A X
+X E H = = = = = = H W X
+X A H A A A A A A H A X
+X A H A A A 8 I A H A X
+X A H A A A A J A H A X
+X X H = = = = = = H X X
+X X X X X X X X X X X X
+# 3rd slice
+X X X X X X X X X X X X
+X A A A A A A A A A A X
+X A A A A E W A A A A X
+X A A A E P P W A A A X
+X A A E P G G P W A A X
+X A E P P G G P P W A X
+X E " P P P P P P " W X
+X A A P P P P P P A A X
+X A A P G G P A P A A X
+X A A P P P P A P A A X
+X X " P P P P P P " X X
+X X X X X X X X X X X X
+# 4th slice
+X X X X X X X X X X X X
+X A A A A A A A A A A X
+X A A A A E W A A A A X
+X A A A E P P W A A A X
+X A A E V A A F W A A X
+X A E P A A A A P W A X
+X E " P A P P P P " W X
+X A A P A A A A P A A X
+X A A P 4 A A A P A A X
+X A A P W A A A P A A X
+X X " P P P P P P " X X
+X X X X X X X X X X X X
+# 5th slice
+X X X X X X X X X X X X
+X A A A A A A A A A A X
+X A A A A E W A A A A X
+X A A A E P P W A A A X
+X A A E V A A F W A A X
+X A E P A A A 6 P W A X
+X E " P A P P P P " W X
+X A A P A A A A P A A X
+X A A P N A A A G A A X
+X A A P Z A A A P A A X
+X X " P P P P P P " X X
+X X X X X X X X X X X X
+# 6th slice
+X X X X X X X X X X X X
+X A A A A A A A A A A X
+X A A A A E W A A A A X
+X A A A E P P W A A A X
+X A A E V A A F W A A X
+X A E P 4 A A A P W A X
+X E " P A P P P P " W X
+X A A P N A A A P A A X
+X A A P Z A A A G A A X
+X A A P A A A A P A A X
+X X " P P P P P P " X X
+X X X X X X X X X X X X
+# 7th slice
+X X X X X X X X X X X X
+X A A A A A A A A A A X
+X A A A A E W A A A A X
+X A A A E P P W A A A X
+X A A E V A A F W A A X
+X A E P A A A A P W A X
+X E " P A A E P P " W X
+X A A P V * A A P A A X
+X A A P A A A 6 P A A X
+X A A P A A A A P A A X
+X X " P P P P P P " X X
+X X X X X X X X X X X X
+# 8th slice
+X X X X X X X X X X X X
+X A A A A A A A A A A X
+X A A A A E W A A A A X
+X A A A E P P W A A A X
+X A A E P G G P W A A X
+X A E P P G G P P W A X
+X E " P P P P P P " W X
+X A A P P P P P P A A X
+X A A P G G G G P A A X
+X A A P P P P P P A A X
+X X " P P P P P P " X X
+X X X X X X X X X X X X
+# 9th slice
+X X X X X X X X X X X X
+X A A A A A A A A A A X
+X A A A A E W A A A A X
+X A A A E V F W A A A X
+X A A E V A A F W A A X
+X A E V A A A A F W A X
+X E H = = = = = = H W X
+X A H A A A A A A H A X
+X A H A A A A A A H A X
+X A H A A A A A A H A X
+X X H = = = = = = H X X
+X X X X X X X X X X X X
+# 10th slice
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X S S S S S S S S S S X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+# 11th slice
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X
+X X X X X X X X X X X X

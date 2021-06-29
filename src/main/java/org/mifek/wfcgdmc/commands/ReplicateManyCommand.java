@@ -17,13 +17,11 @@ import org.mifek.vgl.implementations.PlacementStyle;
 import org.mifek.vgl.utils.TemplateHolder;
 import org.mifek.vgl.wfc.MinecraftWfcAdapterOptions;
 import org.mifek.vgl.wfc.StreamOptions;
+import org.mifek.wfc.datatypes.Direction3D;
 import org.mifek.wfc.models.options.Cartesian3DModelOptions;
 import org.mifek.wfcgdmc.WfcGdmc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ReplicateManyCommand extends CommandBase implements ICommand {
     private static final Generate generate = new Generate();
@@ -100,6 +98,14 @@ public class ReplicateManyCommand extends CommandBase implements ICommand {
         final int doorsX = dX, doorsY = dY, doorsZ = dZ;
         final Block doors = drs;
 
+        HashSet<Direction3D> setPlanes = new HashSet<>();
+        setPlanes.add(Direction3D.UP);
+        setPlanes.add(Direction3D.FORWARD);
+        setPlanes.add(Direction3D.RIGHT);
+        setPlanes.add(Direction3D.DOWN);
+        setPlanes.add(Direction3D.BACKWARD);
+        setPlanes.add(Direction3D.LEFT);
+
         for (int a = 0; a < amount; a++)
             for (int b = 0; b < amount; b++) {
                 int id = a * amount + b;
@@ -127,9 +133,13 @@ public class ReplicateManyCommand extends CommandBase implements ICommand {
 
                             return holder.iterator();
                         },
-                        new Cartesian3DModelOptions(false, true, false, false, false, false, false, false, 1.0),
+                        new Cartesian3DModelOptions(
+                                false, true, false,
+                                true, false, true,
+                                setPlanes, Collections.emptySet(),
+                                false, false, 1.0),
                         null,
-                        1,
+                        0,
                         new StreamOptions(WfcGdmc.overWorldBlockStream, area, PlacementStyle.ON_COLLAPSE),
                         name
                 );
@@ -143,21 +153,21 @@ public class ReplicateManyCommand extends CommandBase implements ICommand {
 
     @Override
     public void init() {
-        System.out.println("Replicate Many Command is initializing the templates.");
-        for (String key : TemplateHolder.INSTANCE.getTemplates().keySet()) {
-            Area area = new Area(0, 0, 0, 3, 3, 3);
-            try {
-                generate.execute(key, area, new MinecraftWfcAdapterOptions(
-                        2,
-                        null,
-                        new Cartesian3DModelOptions(false, true, false, false, false, false, false, false, 1.0),
-                        null,
-                        0,
-                        null,
-                        key
-                ));
-            } catch (Error ignored) {
-            }
-        }
+//        System.out.println("Replicate Many Command is initializing the templates.");
+//        for (String key : TemplateHolder.INSTANCE.getTemplates().keySet()) {
+//            Area area = new Area(0, 0, 0, 3, 3, 3);
+//            try {
+//                generate.execute(key, area, new MinecraftWfcAdapterOptions(
+//                        2,
+//                        null,
+//                        new Cartesian3DModelOptions(false, true, false, true, false, true, false, false, 1.0),
+//                        null,
+//                        0,
+//                        null,
+//                        key
+//                ));
+//            } catch (Error ignored) {
+//            }
+//        }
     }
 }

@@ -10,7 +10,7 @@ import org.mifek.vgl.commands.Test;
 import java.util.Arrays;
 import java.util.List;
 
-public class HelloWorldCommand extends CommandBase implements ICommand {
+public class    HelloWorldCommand extends CommandBase implements ICommand {
     private final List<String> aliases = Arrays.asList("hello_world", "hw");
 
     @Override

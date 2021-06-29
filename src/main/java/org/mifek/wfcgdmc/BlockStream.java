@@ -38,6 +38,9 @@ public class BlockStream implements IBlockStream {
         int M = Math.min(linkedList.size(), config.NUMBER_OF_PLACED_BLOCKS);
         for (int i = 0; i < M; i++) {
             PlacedBlock block = removeFirst();
+
+            System.out.println("Placing");
+
             if (block == null || block.getBlock() == Blocks.NONE) return;
 
 //                System.out.println("Placing block " + block.getBlock().getId());

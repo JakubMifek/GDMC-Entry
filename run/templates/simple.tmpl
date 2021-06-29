@@ -1,0 +1,166 @@
+# Building blocks
+A,2                                              # GRASS
+B,0                                              # AIR
+C,3,variant:DIRT                                 # DIRT
+D,5,variant:DARK_OAK                             # OAK_WOOD_PLANK
+E,1,variant:STONE                                # STONE
+F,64,hinge:LEFT,half:LOWER,facing:EAST           # OAK_DOOR
+G,64,hinge:LEFT,half:UPPER,facing:EAST           # OAK_DOOR
+H,102                                            # GLASS_PANE
+
+20x8x17 # Template dimensions
+
+# Template data
+# 0. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+A A A A A A A A A A A A A A A A A A A A
+# 1. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B E E E E E E B B B B B B
+B B B B B B B B E H H H H E B B B B B B
+B B B B B B B B E E E E E E B B B B B B
+A A A A A A A A C C C C C C A A A A C A
+# 2. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B E E E E B B B B B B B
+B B B B B B B B E B B B B E B B B B B B
+B B B B B B B B H B B B B H B B B B B B
+B B B B B B B B E B B B B E B B B B B B
+A A A A A A A A C D D D D C A A A A C A
+# 3. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B E E E E B B B B B B B
+B B B B B B B B E B B B B E B B B B B B
+B B B B B B B B H B B B B H B B B B B B
+B B B B B B B B E B B B B E B B B B B B
+A A A A A A A A C D D D D C A A A A A A
+# 4. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B E E E E B B B B B B B
+B B B B B B B B E B B B B E B B B B B B
+B B B B B B B B H B B B B H B B B B B B
+B B B B B B B B E B B B B E B B B B B B
+A A A A A A A A C D D D D C A A A A A A
+# 5. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B E E E E B B B B B B B
+B E E E E E E E E B B B B E B B B B B B
+B E H H H H H H E B B B B H B B B B B B
+B E E E E E E E E B B B B E B B B B B B
+A C C C C C C C C D D D D C A A A A A A
+# 6. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B E E E E E E E E E E E B B B B B B B
+B E B B B B B B B B B B B E E E E E E B
+B H B B B B B B B B B B B E H H H H E B
+B E B B B B B B B B B B B E E E E E E B
+A C D D D D D D D D D D D C C C C C C A
+# 7. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B E E E E E E E E E E E E E E E E B B
+B E B B B B B B B B B B B B B B B B E B
+B H B B B B B B B B B B B B B B B B G B
+B E B B B B B B B B B B B B B B B B F B
+A C D D D D D D D D D D D D D D D D D A
+# 8. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B E E E E E E E E E E E E E E E E B B
+B E B B B B B B B B B B B B B B B B E B
+B H B B B B B B B B B B B B B B B B E B
+B E B B B B B B B B B B B B B B B B E B
+A C D D D D D D D D D D D D D D D D C A
+# 9. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B E E E E E E E E E E E E E E E E B B
+B E B B B B B B B B B B B B B B B B E B
+B H B B B B B B B B B B B B B B B B H B
+B E B B B B B B B B B B B B B B B B E B
+A C D D D D D D D D D D D D D D D D C A
+# 10. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B E E E E E E E E E E E E B B
+B E E E E E B B B B B B B B B B B B E B
+B E H H H E B B B B B B B B B B B B H B
+B E E E E E B B B B B B B B B B B B E B
+A C C C C C D D D D D D D D D D D D C A
+# 11. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B E E E E E E E E B B B B B B
+B B B B B E B B B B B B B B E E E E E B
+B B B B B H B B B B B B B B E H H H E B
+B B B B B E B B B B B B B B E E E E E B
+A A A A A C D D D D D D D D C C C C C A
+# 12. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B E E E E E E E E B B B B B B
+B B B B B E B B B B B B B B E B B B B B
+B B B B B H B B B B B B B B H B B B B B
+B B B B B E B B B B B B B B E B B B B B
+A A A A A C D D D D D D D D C A A A A A
+# 13. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B E E E E E E E E B B B B B B
+B B B B B E B B B B B B B B E B B B B B
+B B B B B H B B B B B B B B H B B B B B
+B B B B B E B B B B B B B B E B B B B B
+A A A A A C D D D D D D D D C A A A A A
+# 14. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B E E E E E E E E B B B B B B
+B B B B B E B B B B B B B B E B B B B B
+B B B B B H B B B B B B B B H B B B B B
+B B B B B E B B B B B B B B E B B B B B
+A A A A A C D D D D D D D D C A A A A A
+# 15. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B E E E E E E E E E E B B B B B
+B B B B B E H H H E E H H H E B B B B B
+B B B B B E E E E E E E E E E B B B B B
+A A A A A C C C C C C C C C C A A A A A
+# 16. slice
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B
+A A A A A A A A A A A A A A A A A A A A
