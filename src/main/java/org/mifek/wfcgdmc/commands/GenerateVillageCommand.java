@@ -1,6 +1,5 @@
 package org.mifek.wfcgdmc.commands;
 
-import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import kotlin.Pair;
 import kotlin.Triple;
@@ -16,20 +15,24 @@ import net.minecraft.util.text.TextFormatting;
 import org.jetbrains.annotations.NotNull;
 import org.mifek.vgl.commands.GenerateHouse;
 import org.mifek.vgl.implementations.Area;
-import org.mifek.vgl.implementations.PlacementStyle;
+import org.mifek.vgl.implementations.Blocks;
+import org.mifek.vgl.implementations.PlacedBlock;
 import org.mifek.vgl.wfc.MinecraftVillageAdapter;
 import org.mifek.vgl.wfc.MinecraftVillageAdapterOptions;
-import org.mifek.vgl.wfc.MinecraftWfcAdapterOptions;
-import org.mifek.vgl.wfc.StreamOptions;
+import org.mifek.wfc.datastructures.IntArray3D;
 import org.mifek.wfc.models.options.Cartesian2DModelOptions;
-import org.mifek.wfc.models.options.Cartesian3DModelOptions;
 import org.mifek.wfcgdmc.WfcGdmc;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 public class GenerateVillageCommand extends CommandBase implements ICommand {
     private final List<String> aliases = Arrays.asList("generate_village", "gv");
     private final HashMap<String, Object> emptyMap = new HashMap<>();
+    private static final double PATH_CHANCE = 0.65;
     private GenerateHouseCommand generateHouseCommand;
 
     @NotNull
@@ -91,11 +94,11 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
             try {
                 sender.sendMessage(new TextComponentString("Generating village at [" + x + ";" + y + ";" + z + "] with dimensions [" + w + "x" + h + "x" + d + "]..."));
 
-                HashMap<String, Pair<Float, Triple<Integer, Integer, Integer>>> templates = new HashMap<>();
-                templates.put("test3", new Pair<>(1f, new Triple<>(5, 10, 5)));
-                templates.put("silo", new Pair<>(1f, new Triple<>(13, 10, 13)));
-                templates.put("fountain", new Pair<>(1f, new Triple<>(5, 10, 5)));
-                templates.put("ter2", new Pair<>(1f, new Triple<>(4, 10, 6)));
+                HashMap<String, Triple<Float, Pair<Integer, Integer>, Pair<Integer, Integer>>> templates = new HashMap<>();
+                templates.put("test4", new Triple<>(2f, new Pair<>(8, 8), new Pair<>(28, 28)));
+                templates.put("silo", new Triple<>(0.5f, new Pair<>(13, 13), new Pair<>(17, 17)));
+                templates.put("fountain", new Triple<>(0.5f, new Pair<>(7, 7), new Pair<>(7, 7)));
+                templates.put("ter2", new Triple<>(2f, new Pair<>(10, 10), new Pair<>(24, 24)));
 
                 MinecraftVillageAdapterOptions options = new MinecraftVillageAdapterOptions(
                         new Cartesian2DModelOptions(
@@ -106,8 +109,8 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
                                 false, false, 1.0f
                         ),
                         templates,
-                        57f,
-                        w * d / (12 * 12),
+                        1.5f,
+                        w * d / (18 * 18),
                         null
                 );
 
@@ -121,7 +124,7 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
                     List<?> list = Lists.newArrayList(result);
 
                     if (Math.abs(list.size() - options.getDesiredNumberOfHouses()) < distance) {
-                        distance = list.size();
+                        distance = Math.abs(list.size() - options.getDesiredNumberOfHouses());
                         layout = result;
                     }
                 }
@@ -131,27 +134,17 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
                     return;
                 }
 
-                Optional<Integer> minX = templates.keySet().stream().map(key ->
-                        templates.getOrDefault(key, new Pair<>(1.0f, new Triple<>(5, 5, 5))).getSecond().getFirst()).reduce(Math::min);
-//                Optional<Integer> minY = templates.keySet().stream().map(key ->
-//                        templates.getOrDefault(key, new Pair<>(1.0f, new Triple<>(5, 5, 5))).getSecond().getFirst()).reduce(Math::min);
-                Optional<Integer> minZ = templates.keySet().stream().map(key ->
-                        templates.getOrDefault(key, new Pair<>(1.0f, new Triple<>(5, 5, 5))).getSecond().getFirst()).reduce(Math::min);
+                List<?> list = Lists.newArrayList(layout);
+
+                sender.sendMessage(new TextComponentString("... layout generation finished, it contains " + list.size() + " houses..."));
+
+                ConcurrentLinkedQueue<Future<PlacedBlock[][][]>> futures = new ConcurrentLinkedQueue<>();
 
                 for (Triple<String, Pair<Integer, Integer>, Pair<Integer, Integer>> house : layout) {
-                    if (
-                            house.getThird().getFirst() < minX.orElse(5) ||
-                                    house.getThird().getFirst() > 30 ||
-                                    house.getThird().getSecond() < minZ.orElse(5) ||
-                                    house.getThird().getSecond() > 30
-                    ) {
-                        System.out.println("Skipping house with dimensions [" + house.getThird().getFirst().toString() + " x " + house.getThird().getSecond().toString() + "]");
-                        continue;
-                    }
                     System.out.println("Generating house");
 
-                    WfcGdmc.executors.submit(() -> {
-                        this.generateHouseCommand.execute(server, sender, new String[]{
+                    Future<?> f = WfcGdmc.executors.submit(() -> {
+                        futures.add(this.generateHouseCommand.executeFuture(server, sender, new String[]{
                                 house.getFirst(),
                                 String.valueOf(x + house.getSecond().getFirst()),
                                 String.valueOf(y),
@@ -159,34 +152,286 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
                                 house.getThird().getFirst().toString(),
                                 String.valueOf(h),
                                 house.getThird().getSecond().toString()
-                        });
+                        }, false));
                     });
+
+                    while (!f.isDone()) {
+                        Thread.sleep(50);
+                    }
                 }
 
-                System.out.println("finished");
+                Future<?> generation = WfcGdmc.executors.submit(() -> {
+                    try {
+                        while (!futures.stream().allMatch(it -> it.isDone() || it.isCancelled())) {
+                            try {
+                                System.out.println("Waiting for tasks to finish. " + futures.stream().filter(Future::isDone).count() + " done and " + futures.stream().filter(Future::isCancelled).count() + " cancelled from " + futures.size() + " tasks.");
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
 
-//                generateHouse.execute(name, area, new MinecraftWfcAdapterOptions(
-//                        2, null,
-//                        new Cartesian3DModelOptions(
-//                                false, true, false,
-//                                true, false, true,
-//                                Collections.emptySet(),
-//                                Collections.emptySet(),
-//                                false, false, 1. / 3.
-//                        ),
-//                        null,
-//                        1,
-//                        new StreamOptions(
-//                                WfcGdmc.overWorldBlockStream, area, PlacementStyle.ON_COLLAPSE
-//                        ),
-//                        name
-//                ));
-//                sender.sendMessage(new TextComponentString("...finished " + name));
-            } catch (Error error) {
+                        List<PlacedBlock[][][]> houses = futures.stream().filter(Future::isDone).map(it -> {
+                            try {
+                                return it.get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                            }
+                            return new PlacedBlock[0][0][0];
+                        }).collect(Collectors.toList());
+
+                        List<PlacedBlock> blocks = addPaths(houses, new Area(x, y, z, w, h, d));
+                        for (PlacedBlock block : blocks) {
+                            streamBlock(block);
+                        }
+
+                        sender.sendMessage(new TextComponentString("...finished village generation."));
+                    } catch (Exception | Error error) {
+                        sender.sendMessage(new TextComponentString("...finished village generation with an unfortunate error " + error.getMessage()));
+                        error.printStackTrace();
+                    }
+                });
+
+                WfcGdmc.executors.submit(() -> {
+                    while (!generation.isCancelled() && !generation.isDone()) {
+                        try {
+                            System.out.println("Waiting for generation to finish.");
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    sender.sendMessage(new TextComponentString("Generation done."));
+                });
+            } catch (Exception | Error error) {
                 sender.sendMessage(new TextComponentString("...finished village generation with an unfortunate error " + error.getMessage()));
             }
         });
+    }
 
+    private List<PlacedBlock> addPaths(List<PlacedBlock[][][]> houses, Area area) {
+        System.out.println("Layout");
+        IntArray3D layout = new IntArray3D(area.getWidth(), 3, area.getDepth(), it -> 0); // 0 = dirt/air, 1 = house, 2 = doors, 3 = path
+
+        for (PlacedBlock[][][] house : houses) {
+            for (PlacedBlock[][] row : house) {
+                for (int z = 0; z < row[0].length; z++) {
+                    if (row[0][z].getBlock() != Blocks.DIRT && row[0][z].getBlock() != Blocks.GRASS) {
+                        layout.set(row[0][z].getX() - area.getX(), 0, row[0][z].getZ() - area.getZ(), 1);
+
+                        if (GenerateHouse.Companion.getDOORS().contains(row[1][z].getBlock())) {
+                            layout.set(row[0][z].getX() - area.getX(), 1, row[0][z].getZ() - area.getZ(), 2);
+                        } else if (row[1][z].getBlock() != Blocks.AIR) {
+                            layout.set(row[0][z].getX() - area.getX(), 1, row[0][z].getZ() - area.getZ(), 1);
+                        }
+
+                        if (GenerateHouse.Companion.getDOORS().contains(row[2][z].getBlock())) {
+                            layout.set(row[0][z].getX() - area.getX(), 2, row[0][z].getZ() - area.getZ(), 2);
+                        } else if (row[2][z].getBlock() != Blocks.AIR) {
+                            layout.set(row[0][z].getX() - area.getX(), 2, row[0][z].getZ() - area.getZ(), 1);
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println("...filled.");
+
+        List<Pair<Integer, Integer>> doors = new ArrayList<>();
+        for (int x = 0; x < layout.getWidth(); x++) {
+            for (int z = 0; z < layout.getDepth(); z++) {
+                if (layout.get(x, 1, z) != 2) continue;
+
+                doors.add(new Pair<>(x, z));
+            }
+        }
+
+        System.out.println("Doors located.");
+        Random rand = new Random();
+
+        for (int i = 0; i < doors.size() - 1; i++) {
+            for (int j = i + 1; j < doors.size(); j++) {
+                if (Math.pow(doors.get(i).getFirst() - doors.get(j).getFirst(), 2) + Math.pow(doors.get(i).getSecond() - doors.get(j).getSecond(), 2) > 900 || rand.nextDouble() > 0.85)
+                    continue; // Skip 30% of roads
+
+                System.out.println("Connecting doors " + i + " with " + j);
+                connectDoors(doors.get(i), doors.get(j), layout);
+            }
+        }
+
+        System.out.println("Doors connected.");
+
+        HashMap<String, Object> grass = new HashMap<>();
+        grass.put("type", "tall_grass");
+        HashMap<String, Object> lowerGrass = new HashMap<>();
+        lowerGrass.put("variant", "double_grass");
+        lowerGrass.put("half", "lower");
+        HashMap<String, Object> upperGrass = new HashMap<>();
+        upperGrass.put("variant", "double_grass");
+        upperGrass.put("half", "upper");
+        ArrayList<PlacedBlock> blocks = new ArrayList<>();
+        for (int x = 0; x < layout.getWidth(); x++) {
+            for (int z = 0; z < layout.getDepth(); z++) {
+                if (layout.get(x, 0, z) == 3) {
+                    blocks.add(new PlacedBlock(area.getX() + x, area.getY(), area.getZ() + z, Blocks.GRASS_PATH, emptyMap));
+                } else if (layout.get(x, 0, z) == 0) {
+                    double r = rand.nextDouble();
+
+                    if (r <= 0.01 && layout.get(x, 0, z) == 0 && layout.get(x, 1, z) == 0 && layout.get(x, 2, z) == 0) { // Tall grass
+                        blocks.add(new PlacedBlock(area.getX() + x, area.getY() + 1, area.getZ() + z, Blocks.SUNFLOWER, lowerGrass));
+                        blocks.add(new PlacedBlock(area.getX() + x, area.getY() + 2, area.getZ() + z, Blocks.SUNFLOWER, upperGrass));
+                    } else if (r <= 0.11 && layout.get(x, 0, z) == 0 && layout.get(x, 1, z) == 0) { // Grass
+                        blocks.add(new PlacedBlock(area.getX() + x, area.getY() + 1, area.getZ() + z, Blocks.TALL_GRASS, grass));
+                    }
+                }
+            }
+        }
+
+        System.out.println("Grass added.");
+
+        return blocks;
+    }
+
+    private void connectDoors(Pair<Integer, Integer> door1, Pair<Integer, Integer> door2, IntArray3D layout) {
+        int x1 = door1.getFirst();
+        int z1 = door1.getSecond();
+
+        int x2 = door2.getFirst();
+        int z2 = door2.getSecond();
+
+        if (x1 > 0 && (layout.get(x1 - 1, 0, z1) == 0 || layout.get(x1 - 1, 0, z1) == 3)) x1--;
+        else if (x1 < layout.getWidth() - 1 && (layout.get(x1 + 1, 0, z1) == 0 || layout.get(x1 + 1, 0, z1) == 3)) x1++;
+        else if (z1 > 0 && (layout.get(x1, 0, z1 - 1) == 0 || layout.get(x1, 0, z1 - 1) == 3)) z1--;
+        else if (z1 < layout.getDepth() - 1 && (layout.get(x1, 0, z1 + 1) == 0 || layout.get(x1, 0, z1 + 1) == 3)) z1++;
+        else {
+            System.out.println("Skipping path placement for " + door1 + " and " + door2);
+            return;
+        }
+
+        if (x2 > 0 && (layout.get(x2 - 1, 0, z2) == 0 || layout.get(x2 - 1, 0, z2) == 3)) x2--;
+        else if (x2 < layout.getWidth() - 1 && (layout.get(x2 + 1, 0, z2) == 0 || layout.get(x2 + 1, 0, z2) == 3)) x2++;
+        else if (z2 > 0 && (layout.get(x2, 0, z2 - 1) == 0 || layout.get(x2, 0, z2 - 1) == 3)) z2--;
+        else if (z2 < layout.getDepth() - 1 && (layout.get(x2, 0, z2 + 1) == 0 || layout.get(x2, 0, z2 + 1) == 3)) z2++;
+        else {
+            System.out.println("Skipping path placement for " + door1 + " and " + door2);
+            return;
+        }
+
+        System.out.println("Running A*");
+
+        try {
+            aStar(x1, z1, x2, z2, layout, new Random(), 1, 30);
+
+            for(int i : layout.getIndices()) {
+                if(layout.get(i) == 4) layout.set(i, 0);
+                else if(layout.get(i) == 5) layout.set(i, 3);
+            }
+        } catch (Throwable error) {
+            error.printStackTrace();
+        }
+        System.out.println("A* finished");
+    }
+
+    private boolean aStar(int x, int z, int tX, int tZ, IntArray3D layout, Random r, int depth, int maxDepth) {
+        System.out.println("Testing " + x + " " + z + " against " + tX + " " + tZ);
+        int prev = layout.get(x, 0, z);
+        layout.set(x, 0, z, prev == 0 ? 4 : 5);
+
+        if (x == tX && z == tZ) {
+            System.out.println("Target found");
+            layout.set(x, 0, z, prev);
+            if (r.nextDouble() <= PATH_CHANCE) {
+                layout.set(x, 0, z, 3);
+            }
+            if (x > 0 && (layout.get(x - 1, 0, z) == 0 || layout.get(x - 1, 0, z) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                layout.set(x - 1, 0, z, 3);
+            }
+            if (x < layout.getWidth() - 1 && (layout.get(x + 1, 0, z) == 0 || layout.get(x + 1, 0, z) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                layout.set(x + 1, 0, z, 3);
+            }
+            if (z > 0 && (layout.get(x, 0, z - 1) == 0 || layout.get(x, 0, z - 1) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                layout.set(x, 0, z - 1, 3);
+            }
+            if (z < layout.getDepth() - 1 && (layout.get(x, 0, z + 1) == 0 || layout.get(x, 0, z + 1) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                layout.set(x, 0, z + 1, 3);
+            }
+
+            return true;
+        }
+
+        if (depth == maxDepth) {
+//            layout.set(x, 0, z, prev);
+            return false;
+        }
+
+        List<Pair<Integer, Integer>> positions = new ArrayList<>(8);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (x - i + 1 >= 0 &&
+                        x - i + 1 < layout.getWidth() &&
+                        z - j + 1 >= 0 &&
+                        z - j + 1 < layout.getDepth() &&
+                        (i != 1 || j != 1) &&
+                        (layout.get(x - i + 1, 0, z - j + 1) == 0 || layout.get(x - i + 1, 0, z - j + 1) == 3)
+                ) {
+                    positions.add(new Pair<>(x - i + 1, z - j + 1));
+                }
+            }
+        }
+
+        if (positions.isEmpty()) {
+//            layout.set(x, 0, z, prev);
+            return false;
+        }
+
+        positions.sort((a, b) -> (int) Math.round(
+                (Math.pow(tX - a.getFirst(), 2) + Math.pow(tZ - a.getSecond(), 2)) -
+                        (Math.pow(tX - b.getFirst(), 2) + Math.pow(tZ - b.getSecond(), 2))
+        ));
+
+//        int amnt = Math.max(1 - r.nextInt(3), 0);
+//        for (int i = 0; i < amnt; i++) {
+//        if (positions.size() > 1 && r.nextInt(10) == 0) {
+//            int a = 0;
+//            int b = 1;
+//            Pair<Integer, Integer> tmp = positions.get(a);
+//            positions.set(a, positions.get(b));
+//            positions.set(b, tmp);
+//        }
+//        }
+
+
+        for (Pair<Integer, Integer> position : positions) {
+            if (aStar(position.getFirst(), position.getSecond(), tX, tZ, layout, r, depth + 1, maxDepth)) {
+                layout.set(x, 0, z, prev);
+                if (r.nextDouble() <= PATH_CHANCE) {
+                    layout.set(x, 0, z, 3);
+                }
+
+                if (x > 0 && (layout.get(x - 1, 0, z) == 0 || layout.get(x - 1, 0, z) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                    layout.set(x - 1, 0, z, 3);
+                }
+                if (x < layout.getWidth() - 1 && (layout.get(x + 1, 0, z) == 0 || layout.get(x + 1, 0, z) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                    layout.set(x + 1, 0, z, 3);
+                }
+                if (z > 0 && (layout.get(x, 0, z - 1) == 0 || layout.get(x, 0, z - 1) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                    layout.set(x, 0, z - 1, 3);
+                }
+                if (z < layout.getDepth() - 1 && (layout.get(x, 0, z + 1) == 0 || layout.get(x, 0, z + 1) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                    layout.set(x, 0, z + 1, 3);
+                }
+
+                return true;
+            }
+        }
+
+//        layout.set(x, 0, z, prev);
+        return false;
+    }
+
+    private void streamBlock(PlacedBlock block) {
+        WfcGdmc.overWorldBlockStream.add(block);
     }
 
     @Override

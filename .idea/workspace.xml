@@ -5,17 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f9b95eef-3765-4055-9e68-3fb3727c6673" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateVillageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run/templates/test4.tmpl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run/templates/fountain.tmpl" beforeDir="false" afterPath="$PROJECT_DIR$/run/templates/fountain.tmpl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/BlockStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/BlockStream.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/WfcGdmc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/WfcGdmc.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateFloorPlanCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateFloorPlanCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateHouseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateHouseCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/HelloWorldCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/HelloWorldCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateManyCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateManyCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/utils/BlockState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/utils/BlockState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateVillageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateVillageCommand.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,9 +95,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\jakub\Documents\Github\GDMC-Entry\libs" />
+      <recent name="C:\Users\jakub\Documents\Github\GDMC-Entry\run\templates" />
       <recent name="C:\Users\jakub\Documents\Github\GDMC-Entry\run\saves" />
       <recent name="C:\Users\jakub\Documents\Github\GDMC-Entry\build" />
-      <recent name="C:\Users\jakub\Documents\Github\GDMC-Entry\run\templates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jakub\Documents\Github\GDMC-Entry\run\saves" />
@@ -111,7 +106,7 @@
       <recent name="org.mifek.wfcgdmc.commands" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.GDMC-Entry [runClient]">
+  <component name="RunManager" selected="Gradle.GDMC-Entry [jar]">
     <configuration name="GDMC-Entry [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -198,8 +193,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.GDMC-Entry [runClient]" />
         <item itemvalue="Gradle.GDMC-Entry [jar]" />
+        <item itemvalue="Gradle.GDMC-Entry [runClient]" />
         <item itemvalue="Gradle.GDMC-Entry [build]" />
         <item itemvalue="Gradle.GDMC-Entry [prepareRuns]" />
       </list>

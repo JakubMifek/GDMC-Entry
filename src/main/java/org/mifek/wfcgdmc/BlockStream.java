@@ -39,7 +39,7 @@ public class BlockStream implements IBlockStream {
         for (int i = 0; i < M; i++) {
             PlacedBlock block = removeFirst();
 
-            System.out.println("Placing");
+//            System.out.println("Placing");
 
             if (block == null || block.getBlock() == Blocks.NONE) return;
 
