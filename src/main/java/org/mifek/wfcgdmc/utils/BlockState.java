@@ -10,7 +10,6 @@ import org.mifek.vgl.implementations.Block;
 import org.mifek.vgl.implementations.Blocks;
 
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 public class BlockState {
     public static Block serialize(IBlockState blockState) {
@@ -40,8 +39,8 @@ public class BlockState {
 
     @NotNull
     private static <T extends Enum<T> & IStringSerializable> IBlockState setEnumProperty(IBlockState state, PropertyEnum<T> prop, Block block) throws Error {
-        System.out.println("Converting " + prop.getName() + " value " + block.getProps().get(prop.getName()).toString().toLowerCase());
-        System.out.println("Allowed values: " + prop.getAllowedValues().stream().map(item -> item.toString() + " ").collect(Collectors.joining()));
+//        System.out.println("Converting " + prop.getName() + " value " + block.getProps().get(prop.getName()).toString().toLowerCase());
+//        System.out.println("Allowed values: " + prop.getAllowedValues().stream().map(item -> item.toString() + " ").collect(Collectors.joining()));
         Optional<T> value = prop.parseValue(block.getProps().get(prop.getName()).toString().toLowerCase());
         if (value.isPresent())
             return state.withProperty(prop, value.get());

@@ -1,6 +1,5 @@
 package org.mifek.wfcgdmc.commands;
 
-import com.google.common.collect.Lists;
 import kotlin.Pair;
 import kotlin.Triple;
 import net.minecraft.client.Minecraft;
@@ -13,7 +12,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import org.jetbrains.annotations.NotNull;
-import org.mifek.vgl.commands.GenerateHouse;
+import org.mifek.vgl.ConstantsKt;
 import org.mifek.vgl.implementations.Area;
 import org.mifek.vgl.implementations.Blocks;
 import org.mifek.vgl.implementations.PlacedBlock;
@@ -22,17 +21,18 @@ import org.mifek.vgl.wfc.MinecraftVillageAdapterOptions;
 import org.mifek.wfc.datastructures.IntArray3D;
 import org.mifek.wfc.models.options.Cartesian2DModelOptions;
 import org.mifek.wfcgdmc.WfcGdmc;
+import org.mifek.wfcgdmc.config.WfcGdmcConfig;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class GenerateVillageCommand extends CommandBase implements ICommand {
     private final List<String> aliases = Arrays.asList("generate_village", "gv");
     private final HashMap<String, Object> emptyMap = new HashMap<>();
-    private static final double PATH_CHANCE = 0.65;
     private GenerateHouseCommand generateHouseCommand;
 
     @NotNull
@@ -90,6 +90,8 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
             return;
         }
 
+        double pathChance = WfcGdmcConfig.client.PATH_CHANCE / 100.0;
+
         WfcGdmc.executors.submit(() -> {
             try {
                 sender.sendMessage(new TextComponentString("Generating village at [" + x + ";" + y + ";" + z + "] with dimensions [" + w + "x" + h + "x" + d + "]..."));
@@ -121,7 +123,7 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
                     Iterable<Triple<String, Pair<Integer, Integer>, Pair<Integer, Integer>>> result = MinecraftVillageAdapter.Companion.generate(w, d, options);
                     if (result == null) continue;
 
-                    List<?> list = Lists.newArrayList(result);
+                    List<?> list = StreamSupport.stream(result.spliterator(), false).collect(Collectors.toList());
 
                     if (Math.abs(list.size() - options.getDesiredNumberOfHouses()) < distance) {
                         distance = Math.abs(list.size() - options.getDesiredNumberOfHouses());
@@ -134,7 +136,7 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
                     return;
                 }
 
-                List<?> list = Lists.newArrayList(layout);
+                List<?> list = StreamSupport.stream(layout.spliterator(), false).collect(Collectors.toList());
 
                 sender.sendMessage(new TextComponentString("... layout generation finished, it contains " + list.size() + " houses..."));
 
@@ -178,9 +180,9 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
                                 e.printStackTrace();
                             }
                             return new PlacedBlock[0][0][0];
-                        }).collect(Collectors.toList());
+                        }).filter(Objects::nonNull).collect(Collectors.toList());
 
-                        List<PlacedBlock> blocks = addPaths(houses, new Area(x, y, z, w, h, d));
+                        List<PlacedBlock> blocks = addPaths(houses, new Area(x, y, z, w, h, d), pathChance);
                         for (PlacedBlock block : blocks) {
                             streamBlock(block);
                         }
@@ -210,7 +212,7 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
         });
     }
 
-    private List<PlacedBlock> addPaths(List<PlacedBlock[][][]> houses, Area area) {
+    private List<PlacedBlock> addPaths(List<PlacedBlock[][][]> houses, Area area, double pathChance) {
         System.out.println("Layout");
         IntArray3D layout = new IntArray3D(area.getWidth(), 3, area.getDepth(), it -> 0); // 0 = dirt/air, 1 = house, 2 = doors, 3 = path
 
@@ -220,13 +222,13 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
                     if (row[0][z].getBlock() != Blocks.DIRT && row[0][z].getBlock() != Blocks.GRASS) {
                         layout.set(row[0][z].getX() - area.getX(), 0, row[0][z].getZ() - area.getZ(), 1);
 
-                        if (GenerateHouse.Companion.getDOORS().contains(row[1][z].getBlock())) {
+                        if (ConstantsKt.getDOORS().contains(row[1][z].getBlock())) {
                             layout.set(row[0][z].getX() - area.getX(), 1, row[0][z].getZ() - area.getZ(), 2);
                         } else if (row[1][z].getBlock() != Blocks.AIR) {
                             layout.set(row[0][z].getX() - area.getX(), 1, row[0][z].getZ() - area.getZ(), 1);
                         }
 
-                        if (GenerateHouse.Companion.getDOORS().contains(row[2][z].getBlock())) {
+                        if (ConstantsKt.getDOORS().contains(row[2][z].getBlock())) {
                             layout.set(row[0][z].getX() - area.getX(), 2, row[0][z].getZ() - area.getZ(), 2);
                         } else if (row[2][z].getBlock() != Blocks.AIR) {
                             layout.set(row[0][z].getX() - area.getX(), 2, row[0][z].getZ() - area.getZ(), 1);
@@ -247,7 +249,7 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
             }
         }
 
-        System.out.println("Doors located.");
+        System.out.println("Doors located. (" + doors.size() + ")");
         Random rand = new Random();
 
         for (int i = 0; i < doors.size() - 1; i++) {
@@ -256,7 +258,7 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
                     continue; // Skip 30% of roads
 
                 System.out.println("Connecting doors " + i + " with " + j);
-                connectDoors(doors.get(i), doors.get(j), layout);
+                connectDoors(doors.get(i), doors.get(j), layout, pathChance);
             }
         }
 
@@ -293,7 +295,7 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
         return blocks;
     }
 
-    private void connectDoors(Pair<Integer, Integer> door1, Pair<Integer, Integer> door2, IntArray3D layout) {
+    private void connectDoors(Pair<Integer, Integer> door1, Pair<Integer, Integer> door2, IntArray3D layout, double pathChance) {
         int x1 = door1.getFirst();
         int z1 = door1.getSecond();
 
@@ -321,11 +323,11 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
         System.out.println("Running A*");
 
         try {
-            aStar(x1, z1, x2, z2, layout, new Random(), 1, 30);
+            aStar(x1, z1, x2, z2, layout, new Random(), 1, 30, pathChance);
 
-            for(int i : layout.getIndices()) {
-                if(layout.get(i) == 4) layout.set(i, 0);
-                else if(layout.get(i) == 5) layout.set(i, 3);
+            for (int i : layout.getIndices()) {
+                if (layout.get(i) == 4) layout.set(i, 0);
+                else if (layout.get(i) == 5) layout.set(i, 3);
             }
         } catch (Throwable error) {
             error.printStackTrace();
@@ -333,7 +335,7 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
         System.out.println("A* finished");
     }
 
-    private boolean aStar(int x, int z, int tX, int tZ, IntArray3D layout, Random r, int depth, int maxDepth) {
+    private boolean aStar(int x, int z, int tX, int tZ, IntArray3D layout, Random r, int depth, int maxDepth, double pathChance) {
         System.out.println("Testing " + x + " " + z + " against " + tX + " " + tZ);
         int prev = layout.get(x, 0, z);
         layout.set(x, 0, z, prev == 0 ? 4 : 5);
@@ -341,19 +343,19 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
         if (x == tX && z == tZ) {
             System.out.println("Target found");
             layout.set(x, 0, z, prev);
-            if (r.nextDouble() <= PATH_CHANCE) {
+            if (r.nextDouble() <= pathChance) {
                 layout.set(x, 0, z, 3);
             }
-            if (x > 0 && (layout.get(x - 1, 0, z) == 0 || layout.get(x - 1, 0, z) == 3) && r.nextDouble() <= PATH_CHANCE) {
+            if (x > 0 && (layout.get(x - 1, 0, z) == 0 || layout.get(x - 1, 0, z) == 3) && r.nextDouble() <= pathChance) {
                 layout.set(x - 1, 0, z, 3);
             }
-            if (x < layout.getWidth() - 1 && (layout.get(x + 1, 0, z) == 0 || layout.get(x + 1, 0, z) == 3) && r.nextDouble() <= PATH_CHANCE) {
+            if (x < layout.getWidth() - 1 && (layout.get(x + 1, 0, z) == 0 || layout.get(x + 1, 0, z) == 3) && r.nextDouble() <= pathChance) {
                 layout.set(x + 1, 0, z, 3);
             }
-            if (z > 0 && (layout.get(x, 0, z - 1) == 0 || layout.get(x, 0, z - 1) == 3) && r.nextDouble() <= PATH_CHANCE) {
+            if (z > 0 && (layout.get(x, 0, z - 1) == 0 || layout.get(x, 0, z - 1) == 3) && r.nextDouble() <= pathChance) {
                 layout.set(x, 0, z - 1, 3);
             }
-            if (z < layout.getDepth() - 1 && (layout.get(x, 0, z + 1) == 0 || layout.get(x, 0, z + 1) == 3) && r.nextDouble() <= PATH_CHANCE) {
+            if (z < layout.getDepth() - 1 && (layout.get(x, 0, z + 1) == 0 || layout.get(x, 0, z + 1) == 3) && r.nextDouble() <= pathChance) {
                 layout.set(x, 0, z + 1, 3);
             }
 
@@ -398,27 +400,28 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
 //            Pair<Integer, Integer> tmp = positions.get(a);
 //            positions.set(a, positions.get(b));
 //            positions.set(b, tmp);
-//        }
+
+
 //        }
 
 
         for (Pair<Integer, Integer> position : positions) {
-            if (aStar(position.getFirst(), position.getSecond(), tX, tZ, layout, r, depth + 1, maxDepth)) {
+            if (aStar(position.getFirst(), position.getSecond(), tX, tZ, layout, r, depth + 1, maxDepth, pathChance)) {
                 layout.set(x, 0, z, prev);
-                if (r.nextDouble() <= PATH_CHANCE) {
+                if (r.nextDouble() <= pathChance) {
                     layout.set(x, 0, z, 3);
                 }
 
-                if (x > 0 && (layout.get(x - 1, 0, z) == 0 || layout.get(x - 1, 0, z) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                if (x > 0 && (layout.get(x - 1, 0, z) == 0 || layout.get(x - 1, 0, z) == 3) && r.nextDouble() <= pathChance) {
                     layout.set(x - 1, 0, z, 3);
                 }
-                if (x < layout.getWidth() - 1 && (layout.get(x + 1, 0, z) == 0 || layout.get(x + 1, 0, z) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                if (x < layout.getWidth() - 1 && (layout.get(x + 1, 0, z) == 0 || layout.get(x + 1, 0, z) == 3) && r.nextDouble() <= pathChance) {
                     layout.set(x + 1, 0, z, 3);
                 }
-                if (z > 0 && (layout.get(x, 0, z - 1) == 0 || layout.get(x, 0, z - 1) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                if (z > 0 && (layout.get(x, 0, z - 1) == 0 || layout.get(x, 0, z - 1) == 3) && r.nextDouble() <= pathChance) {
                     layout.set(x, 0, z - 1, 3);
                 }
-                if (z < layout.getDepth() - 1 && (layout.get(x, 0, z + 1) == 0 || layout.get(x, 0, z + 1) == 3) && r.nextDouble() <= PATH_CHANCE) {
+                if (z < layout.getDepth() - 1 && (layout.get(x, 0, z + 1) == 0 || layout.get(x, 0, z + 1) == 3) && r.nextDouble() <= pathChance) {
                     layout.set(x, 0, z + 1, 3);
                 }
 

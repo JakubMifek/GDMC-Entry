@@ -10,18 +10,21 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import org.jetbrains.annotations.NotNull;
+import org.mifek.vgl.ConstantsKt;
 import org.mifek.vgl.commands.GenerateHouse;
-import org.mifek.vgl.implementations.*;
-import org.mifek.vgl.interfaces.IArea;
+import org.mifek.vgl.implementations.Area;
+import org.mifek.vgl.implementations.PlacedBlock;
+import org.mifek.vgl.implementations.PlacementStyle;
 import org.mifek.vgl.utils.TemplateHolder;
-import org.mifek.vgl.wfc.*;
-import org.mifek.wfc.models.options.Cartesian3DModelOptions;
+import org.mifek.vgl.wfc.MinecraftWfcAdapterOptions;
+import org.mifek.vgl.wfc.StreamOptions;
 import org.mifek.wfcgdmc.WfcGdmc;
 
-import java.util.*;
-import java.util.concurrent.Callable;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Future;
 
+/*
 class GenerateRunnable implements Callable<PlacedBlock[][][]> {
     private final ICommandSender sender;
     private final String name;
@@ -74,7 +77,7 @@ class GenerateRunnable implements Callable<PlacedBlock[][][]> {
 
             sender.sendMessage(new TextComponentString("...finished " + name));
 
-            if (res == null) this.res = new PlacedBlock[0][0][0];
+            if (res == null) res = new PlacedBlock[0][0][0];
 
             this.res = res;
 
@@ -101,10 +104,10 @@ class GenerateRunnable implements Callable<PlacedBlock[][][]> {
                 house, GenerateHouse.Companion.getBREAKABLE(), null);
     }
 }
+*/
 
 public class GenerateHouseCommand extends CommandBase implements ICommand {
     private final List<String> aliases = Arrays.asList("generate_house", "gh");
-    private final HashMap<String, Object> emptyMap = new HashMap<>();
     private final GenerateHouse generate = new GenerateHouse();
 
     @NotNull
@@ -130,7 +133,7 @@ public class GenerateHouseCommand extends CommandBase implements ICommand {
         return true;
     }
 
-    public Future<PlacedBlock[][][]> executeFuture(@NotNull MinecraftServer server, @NotNull ICommandSender sender, String[] args, Boolean ret) {
+    public Future<PlacedBlock[][][]> executeFuture(@NotNull MinecraftServer server, @NotNull ICommandSender sender, String[] args, Boolean stream) {
         if (args.length == 4) {
             Minecraft instance = Minecraft.getMinecraft();
             if (instance.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
@@ -163,9 +166,17 @@ public class GenerateHouseCommand extends CommandBase implements ICommand {
 
         String name = args[0];
         Area area = new Area(x1, y1, z1, w, h, d);
-        GenerateRunnable gr = new GenerateRunnable(sender, name, generate, area, x1, y1, z1, w, h, d, ret);
+        MinecraftWfcAdapterOptions options = GenerateHouse.Companion.getDefaultOptions();
 
-        return WfcGdmc.executors.submit(gr);
+
+        return WfcGdmc.executors.submit(() -> {
+            PlacedBlock[][][] result = generate.execute(name, area, options.copy(2, options.getSetBlocks(), options.getModelOptions(), options.getDebugOptions(), 2, stream ? new StreamOptions(WfcGdmc.overWorldBlockStream, area, PlacementStyle.ON_FINISH) : null, name));
+            if (!stream && result != null) {
+                GenerateHouse.Companion.stream(WfcGdmc.overWorldBlockStream, area, result, null, ConstantsKt.getBREAKABLE());
+                GenerateHouse.Companion.stream(WfcGdmc.overWorldBlockStream, area, result, ConstantsKt.getBREAKABLE(), null);
+            }
+            return result;
+        });
     }
 
     @Override
@@ -175,23 +186,11 @@ public class GenerateHouseCommand extends CommandBase implements ICommand {
 
     @Override
     public void init() {
+        MinecraftWfcAdapterOptions options = GenerateHouse.Companion.getDefaultOptions();
         Area area = new Area(0, 0, 0, 3, 3, 3);
         for (String name : TemplateHolder.INSTANCE.getTemplates().keySet()) {
             WfcGdmc.executors.submit(() -> {
-                generate.execute(name, area, new MinecraftWfcAdapterOptions(
-                        2, null,
-                        new Cartesian3DModelOptions(
-                                false, true, false,
-                                true, false, true,
-                                Collections.emptySet(),
-                                Collections.emptySet(),
-                                false, false, 1. / 3.
-                        ),
-                        null,
-                        0,
-                        null,
-                        name
-                ));
+                generate.execute(name, area, options.copy(2, options.getSetBlocks(), options.getModelOptions(), options.getDebugOptions(), 0, options.getStreamOptions(), name));
             });
         }
     }

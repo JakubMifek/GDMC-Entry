@@ -10,7 +10,8 @@ import org.mifek.vgl.commands.Test;
 import java.util.Arrays;
 import java.util.List;
 
-public class    HelloWorldCommand extends CommandBase implements ICommand {
+public class HelloWorldCommand extends CommandBase implements ICommand {
+    private static final Test command = new Test();
     private final List<String> aliases = Arrays.asList("hello_world", "hw");
 
     @Override
@@ -40,11 +41,9 @@ public class    HelloWorldCommand extends CommandBase implements ICommand {
             return;
         }
 
-        sender.sendMessage(new TextComponentString(new Test().test()));
+        sender.sendMessage(new TextComponentString(command.test()));
     }
 
     @Override
-    public void init() {
-
-    }
+    public void init() { }
 }

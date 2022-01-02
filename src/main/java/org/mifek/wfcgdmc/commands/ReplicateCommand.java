@@ -1,7 +1,5 @@
 package org.mifek.wfcgdmc.commands;
 
-import kotlin.Pair;
-import kotlin.Triple;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -12,21 +10,16 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import org.jetbrains.annotations.NotNull;
-import org.mifek.vgl.commands.Generate;
+import org.mifek.vgl.commands.Replicate;
 import org.mifek.vgl.implementations.Area;
-import org.mifek.vgl.implementations.Block;
 import org.mifek.vgl.implementations.PlacementStyle;
-import org.mifek.vgl.utils.TemplateHolder;
-import org.mifek.vgl.wfc.MinecraftWfcAdapterOptions;
 import org.mifek.vgl.wfc.StreamOptions;
-import org.mifek.wfc.datatypes.Direction3D;
-import org.mifek.wfc.models.options.Cartesian3DModelOptions;
 import org.mifek.wfcgdmc.WfcGdmc;
 
 import java.util.*;
 
 public class ReplicateCommand extends CommandBase implements ICommand {
-    private static final Generate generate = new Generate();
+    private static final Replicate command = new Replicate();
     private final List<String> aliases = Arrays.asList("replicate", "r");
 
     @NotNull
@@ -88,80 +81,11 @@ public class ReplicateCommand extends CommandBase implements ICommand {
         sender.sendMessage(new TextComponentString("Replicating " + name + " at [" + x1 + ", " + y1 + ", " + z1 + "] in area of dimensions " + w + "x" + h + "x" + d));
 
         Area area = new Area(x1, y1, z1, w, h, d);
-
-        Block[][][] template = TemplateHolder.INSTANCE.getTemplates().get(name);
-
-/*
-        Block drs = null;
-        int dX = 0, dY = 0, dZ = 0;
-        for (int z = 0; z < template[0][0].length && drs == null; z++) {
-            for (int y = 0; y < template[0].length && drs == null; y++) {
-                for (int x = 0; x < template.length && drs == null; x++) {
-                    if (template[x][y][z].getBlock() == Blocks.OAK_DOOR) {
-                        drs = template[x][y][z];
-                        dX = x;
-                        dY = y;
-                        dZ = z;
-                    }
-                }
-            }
-        }
-
-        final Block drsF = drs;
-        final int dXF = dX, dYF = dY, dZF = dZ;
-*/
-
-        Iterable<Pair<Triple<Integer, Integer, Integer>, ? extends Block>> setBlocks = () -> {
-            ArrayList<Pair<Triple<Integer, Integer, Integer>, ? extends Block>> holder = new ArrayList<>();
-            HashMap<String, Object> emptyParams = new HashMap<>();
-            /*
-            if (drsF != null) {
-                final int doorsX = dXF, doorsY = dYF, doorsZ = dZF;
-                final Block doors = drsF;
-                for (int x = 0; x < w; x++) {
-                    for (int y = 1; y < h; y++) {
-                        holder.add(new Pair<>(new Triple<>(x, y, 0), new Block(Blocks.AIR, emptyParams)));
-                        holder.add(new Pair<>(new Triple<>(x, y, d - 1), new Block(Blocks.AIR, emptyParams)));
-                        if (y == h - 1 || x == 0 || x == w - 1) {
-                            for (int z = 0; z < d; z++) {
-                                holder.add(new Pair<>(new Triple<>(x, y, z), new Block(Blocks.AIR, emptyParams)));
-                            }
-                        }
-                    }
-                }
-
-                holder.add(new Pair<>(new Triple<>(doorsX, doorsY, doorsZ), doors));
-            }
-            */
-
-            holder.add(new Pair<>(new Triple<>(w / 2, 0, d / 2), template[template.length / 2][0][template[0][0].length / 2]));
-
-            System.out.println(holder.get(0));
-
-            return holder.iterator();
-        };
-
-        HashSet<Direction3D> setPlanes = new HashSet<>();
-        setPlanes.add(Direction3D.UP);
-        setPlanes.add(Direction3D.FORWARD);
-        setPlanes.add(Direction3D.RIGHT);
-        setPlanes.add(Direction3D.DOWN);
-        setPlanes.add(Direction3D.BACKWARD);
-        setPlanes.add(Direction3D.LEFT);
-
-        MinecraftWfcAdapterOptions options = new MinecraftWfcAdapterOptions(
-                2,
-                setBlocks,
-                new Cartesian3DModelOptions(false, true, false, true, false, true, setPlanes, Collections.emptySet(), false, false, 0.333333),
-                null,
-                1,
-                new StreamOptions(WfcGdmc.overWorldBlockStream, area, PlacementStyle.ON_COLLAPSE),
-                name
-        );
+        StreamOptions so = new StreamOptions(WfcGdmc.overWorldBlockStream, area, PlacementStyle.ON_COLLAPSE);
 
         WfcGdmc.executors.submit(() -> {
             try {
-                generate.execute(name, area, options);
+                command.execute(name, area, so);
             } catch (Error error) {
                 System.out.println("Failed with unfortunate error: " + error.getMessage());
             }
@@ -169,7 +93,5 @@ public class ReplicateCommand extends CommandBase implements ICommand {
     }
 
     @Override
-    public void init() {
-
-    }
+    public void init() { }
 }

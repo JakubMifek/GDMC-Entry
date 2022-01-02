@@ -23,13 +23,10 @@ public class WfcGdmc {
 
     public static final ICommand[] commands = new ICommand[]{
             new HelloWorldCommand(),
-            new SpawnHouseCommand(),
             new GenerateHouseCommand(),
-            new SpawnBlockCommand(),
             new SaveTemplateCommand(),
             new ReplicateCommand(),
             new ReplicateManyCommand(),
-            new GenerateFloorPlanCommand(),
             new GenerateVillageCommand()
     };
 

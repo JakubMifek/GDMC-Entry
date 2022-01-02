@@ -16,6 +16,10 @@ public class WfcGdmcConfig {
         @Config.Comment("Sets how many blocks are to be placed in single batch.")
         @Config.RangeInt(min = 1, max = 4096)
         public int NUMBER_OF_PLACED_BLOCKS = 512;
+
+        @Config.Comment("Sets the percentage chance of a path spawning.")
+        @Config.RangeInt(min = 0, max = 100)
+        public int PATH_CHANCE = 65;
         /*
         @Config.Comment("Sets how many MS to wait between batch placements.")
         @Config.RangeInt(min = 0, max = 60000)
