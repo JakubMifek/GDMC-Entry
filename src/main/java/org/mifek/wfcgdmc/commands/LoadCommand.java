@@ -55,7 +55,7 @@ public class LoadCommand extends CommandBase implements ICommand {
                 double bY = blockVector.getY();
                 double bZ = blockVector.getZ();
 
-                args = new String[]{args[0], String.valueOf(bX), String.valueOf(bY), String.valueOf(bZ), args[1], args[2], args[3]};
+                args = new String[]{args[0], String.valueOf(bX), String.valueOf(bY), String.valueOf(bZ)};
             }
         }
 

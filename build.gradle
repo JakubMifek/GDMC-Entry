@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+        classpath 'org.jetbrains.dokka:dokka-gradle-plugin:1.6.10'
     }
 }
 
@@ -14,6 +15,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
 apply plugin: 'java'
+apply plugin: 'org.jetbrains.dokka'
 
 version = '1.0'
 group = 'org.mifek.wfcgdmc' // http://maven.apache.org/guides/mini/guide-naming-conventions.html

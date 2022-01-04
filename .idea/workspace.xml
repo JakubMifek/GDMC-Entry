@@ -5,24 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f9b95eef-3765-4055-9e68-3fb3727c6673" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries-with-intellij-classes.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/LoadCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/deprecated/SpawnBlockCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/deprecated/SpawnHouseCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ListCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/WfcGdmc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/WfcGdmc.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateFloorPlanCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/deprecated/GenerateFloorPlanCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateHouseCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateHouseCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateVillageCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/GenerateVillageCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/HelloWorldCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/HelloWorldCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateManyCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/ReplicateManyCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/SpawnBlockCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/SpawnHouseCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/LoadCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/commands/LoadCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/config/WfcGdmcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/config/WfcGdmcConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/utils/BlockState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/mifek/wfcgdmc/utils/BlockState.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +46,36 @@
                 <item name="GDMC-Entry" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="GDMC-Entry" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="documentation" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="GDMC-Entry" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="fg_runs" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="GDMC-Entry" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="help" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="GDMC-Entry" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="GDMC-Entry" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="publishing" type="c8890929:TasksNode$1" />
               </path>
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -183,6 +202,27 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="GDMC-Entry [javadoc]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="javadoc" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="GDMC-Entry [prepareRuns]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -228,6 +268,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.GDMC-Entry [runClient]" />
+        <item itemvalue="Gradle.GDMC-Entry [javadoc]" />
         <item itemvalue="Gradle.GDMC-Entry [jar]" />
         <item itemvalue="Gradle.GDMC-Entry [build]" />
         <item itemvalue="Gradle.GDMC-Entry [prepareRuns]" />

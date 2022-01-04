@@ -44,7 +44,7 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
     @NotNull
     @Override
     public String getUsage(@NotNull ICommandSender sender) {
-        return aliases.get(0) + "<x> <y> <z> <w> <h> <d>";
+        return aliases.get(0) + "<x> <y> <z> <w> <h> <d> <...template names divided by space>";
     }
 
     @NotNull
@@ -68,11 +68,35 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
                 double bY = blockVector.getY();
                 double bZ = blockVector.getZ();
 
-                args = new String[]{String.valueOf(bX), String.valueOf(bY), String.valueOf(bZ), args[0], args[1], args[2]};
+                String[] tmp = new String[args.length + 3];
+                tmp[0] = String.valueOf(bX);
+                tmp[1] = String.valueOf(bY);
+                tmp[2] = String.valueOf(bZ);
+                System.arraycopy(args, 0, tmp, 3, args.length);
+                args = tmp;
+            }
+        } else {
+            try {
+                int t = (int) CommandBase.parseDouble(args[4]);
+            } catch (NumberInvalidException exception) {
+                Minecraft instance = Minecraft.getMinecraft();
+                if (instance.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
+                    BlockPos blockVector = instance.objectMouseOver.getBlockPos();
+                    double bX = blockVector.getX();
+                    double bY = blockVector.getY();
+                    double bZ = blockVector.getZ();
+
+                    String[] tmp = new String[args.length + 3];
+                    tmp[0] = String.valueOf(bX);
+                    tmp[1] = String.valueOf(bY);
+                    tmp[2] = String.valueOf(bZ);
+                    System.arraycopy(args, 0, tmp, 3, args.length);
+                    args = tmp;
+                }
             }
         }
 
-        if (args.length != 6) {
+        if (args.length < 6) {
             sender.sendMessage(new TextComponentString(TextFormatting.RED + "Expected 6 arguments <x> <y> <z> <w> <h> <d>."));
             return;
         }
@@ -91,16 +115,22 @@ public class GenerateVillageCommand extends CommandBase implements ICommand {
         }
 
         double pathChance = WfcGdmcConfig.client.PATH_CHANCE / 100.0;
+        HashMap<String, Triple<Float, Pair<Integer, Integer>, Pair<Integer, Integer>>> templates = new HashMap<>();
+        if (args.length > 6) {
+            for (int i = 6; i < args.length; i++) {
+                templates.put(args[i], new Triple<>(1f, new Pair<>(8, 8), new Pair<>(28, 28)));
+            }
+        } else {
+            templates.put("test4", new Triple<>(2f, new Pair<>(8, 8), new Pair<>(28, 28)));
+            templates.put("silo", new Triple<>(0.5f, new Pair<>(13, 13), new Pair<>(17, 17)));
+            templates.put("fountain", new Triple<>(0.5f, new Pair<>(7, 7), new Pair<>(7, 7)));
+            templates.put("ter2", new Triple<>(2f, new Pair<>(10, 10), new Pair<>(24, 24)));
+        }
+
 
         WfcGdmc.executors.submit(() -> {
             try {
                 sender.sendMessage(new TextComponentString("Generating village at [" + x + ";" + y + ";" + z + "] with dimensions [" + w + "x" + h + "x" + d + "]..."));
-
-                HashMap<String, Triple<Float, Pair<Integer, Integer>, Pair<Integer, Integer>>> templates = new HashMap<>();
-                templates.put("test4", new Triple<>(2f, new Pair<>(8, 8), new Pair<>(28, 28)));
-                templates.put("silo", new Triple<>(0.5f, new Pair<>(13, 13), new Pair<>(17, 17)));
-                templates.put("fountain", new Triple<>(0.5f, new Pair<>(7, 7), new Pair<>(7, 7)));
-                templates.put("ter2", new Triple<>(2f, new Pair<>(10, 10), new Pair<>(24, 24)));
 
                 MinecraftVillageAdapterOptions options = new MinecraftVillageAdapterOptions(
                         new Cartesian2DModelOptions(

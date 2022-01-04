@@ -24,10 +24,12 @@ public class WfcGdmc {
     public static final ICommand[] commands = new ICommand[]{
             new HelloWorldCommand(),
             new GenerateHouseCommand(),
-            new SaveTemplateCommand(),
+            new GenerateVillageCommand(),
+            new LoadCommand(),
+            new ListCommand(),
             new ReplicateCommand(),
             new ReplicateManyCommand(),
-            new GenerateVillageCommand()
+            new SaveTemplateCommand()
     };
 
     @EventHandler
